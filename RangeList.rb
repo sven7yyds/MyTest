@@ -4,7 +4,9 @@
 # NOTE: Feel free to add any extra member variables/functions you like. 
 #!/usr/bin/ruby
 # -*- coding: UTF-8 -*-
+
 $rangeArray = Array.new # 全局数组，用于存储区间各个元素值
+
 class RangeList
   # 添加操作：range 范围数组
   def add(range)
@@ -60,6 +62,7 @@ class RangeList
     end
   end
 end
+
 # 测试用例
 # Should display: [1, 5) 
 rl = RangeList.new
