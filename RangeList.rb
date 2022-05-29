@@ -39,7 +39,9 @@ class RangeList
       if flag
         showRes += "[#{$rangeArray[i]},"
         flag = false
-      # flag为false说明正在一组连续的数值内遍历，当前值和下一个值不连续说明到了尾数区间
+      # 1.flag为false说明正在一组连续的数值内遍历，当前值和下一个值不连续说明到了尾数区间
+      # 2.遍历到最后一个参数时，会存在i + 1 = len的场景，允许数组越界
+      # PS：越界时，数组返回的值为nil，能使不等式成立，仍然正常走完打印流程
       elsif $rangeArray[i] + 1 != $rangeArray[i + 1]
         showRes += " #{$rangeArray[i] + 1}) "
         flag = true
