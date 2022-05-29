@@ -29,28 +29,15 @@ class RangeList
       $rangeArray = ($rangeArray - removeArray).sort	
     end
   end
-
+  
   # 打印操作：用于打印出最后的结果
-  def print 
-    len = $rangeArray.length # 数组长度
-    i = 0 # 下标索引
-    flag = true # 标记位，用于判断是否开始新的一个区间
-    showRes = "" # 打印结果
-    while i < len do
-      # 判断是否新开始的一组数据，增加“[”符号以及首个值及分隔符“,”
-      if flag
-        showRes += "[#{$rangeArray[i]},"
-        flag = false
-      # 1.flag为false说明正在一组连续的数值内遍历，当前值和下一个值不连续说明到了尾数区间
-      # 2.遍历到最后一个参数时，会存在i + 1 = len的场景，允许数组越界
-      # PS：越界时，数组返回的值为nil，能使不等式成立，仍然正常走完打印流程
-      elsif $rangeArray[i] + 1 != $rangeArray[i + 1]
-        showRes += " #{$rangeArray[i] + 1}) "
-        flag = true
-      end
-      i += 1
-    end
-    puts showRes
+  def print
+    showRes = ""
+    # slice_when: 针对顺序元素x,y，当y!=x+1时，说明到了当前分区tempArray的最后一个数字x，此时需要对元素进行划分
+    # each：对每一个满足slice_when条件的分区进行操作，获取当前分区tempArray的第一个数字和最后一个数字进行拼接打印
+    showArray = $rangeArray.slice_when{|x,y| (y != x+1)}
+                            .each{ |tempArray| (showRes += "[" + "#{tempArray.first}" + ", " + "#{(tempArray.last + 1)}" + ") ")}
+    puts "#{showRes}"
   end
 
   # 判断入参合理性，必须为[a,b]，a < b；a=b时，操作无实际意义
