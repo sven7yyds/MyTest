@@ -6,56 +6,59 @@
 # -*- coding: UTF-8 -*-
 $rangeArray = Array.new # 全局数组，用于存储区间各个元素值
 class RangeList
-	def add(range)
-		if check(range)
-			# 增加区间：根据入参转换成对应的数组，使用...运算符，不会取到上限值
-			addArray = Array(range.first...range.last)
-			# 取增加区间和全局数组的并集作为最后的结果，并进行排序
-			$rangeArray = (addArray | $rangeArray).sort
-		end
-	end
-	
-	def remove(range)
-		if check(range)
-			# 临时区间：根据入参转换成对应的数组
-			tempArray = Array(range.first...range.last)
-			# 真正要移除的元素集合：取临时区间和全局数组的交集，获取要移除的元素
-			removeArray = tempArray & $rangeArray
-			# 执行移除操作后排序
-			$rangeArray = ($rangeArray - removeArray).sort	
-		end
-	end
-	
-	def print 
-		len = $rangeArray.length # 数组长度
-		i = 0 # 下标索引
-		flag = true # 标记位，用于判断是否开始新的一个区间
-		showRes = "" # 打印结果
-		while i < len do
-			# 判断是否新开始的一组数据，增加“[”符号以及首个值及分隔符“,”
-			if flag
-				showRes += "[#{$rangeArray[i]},"
-				flag = false
-			# flag为false说明正在一组连续的数值内遍历，当前值和下一个值不连续说明到了尾数区间
-			elsif $rangeArray[i] + 1 != $rangeArray[i + 1]
-				showRes += " #{$rangeArray[i] + 1}) "
-				flag = true
-			end
-			i += 1
-		end
-		puts showRes
-	end
-	
-	# 判断入参合理性，必须为[a,b]，a < b；a=b时，操作无实际意义
-	def check(range)
-		if range.length == 2 and range.first < range.last
-			return true
-		else
-			return nil
-		end
-	end
-end
+  # 添加操作：range 范围数组
+  def add(range)
+    if check(range)
+      # 增加区间：根据入参转换成对应的数组，使用...运算符，不会取到上限值
+      addArray = Array(range.first...range.last)
+      # 取增加区间和全局数组的并集作为最后的结果，并进行排序
+      $rangeArray = (addArray | $rangeArray).sort
+    end
+  end
+  
+  # 移除操作：range 范围数组
+  def remove(range)
+    if check(range)
+      # 临时区间：根据入参转换成对应的数组
+      tempArray = Array(range.first...range.last)
+      # 真正要移除的元素集合：取临时区间和全局数组的交集，获取要移除的元素
+      removeArray = tempArray & $rangeArray
+      # 执行移除操作后排序
+      $rangeArray = ($rangeArray - removeArray).sort	
+    end
+  end
 
+  # 打印操作：用于打印出最后的结果
+  def print 
+    len = $rangeArray.length # 数组长度
+    i = 0 # 下标索引
+    flag = true # 标记位，用于判断是否开始新的一个区间
+    showRes = "" # 打印结果
+    while i < len do
+      # 判断是否新开始的一组数据，增加“[”符号以及首个值及分隔符“,”
+      if flag
+        showRes += "[#{$rangeArray[i]},"
+        flag = false
+      # flag为false说明正在一组连续的数值内遍历，当前值和下一个值不连续说明到了尾数区间
+      elsif $rangeArray[i] + 1 != $rangeArray[i + 1]
+        showRes += " #{$rangeArray[i] + 1}) "
+        flag = true
+      end
+      i += 1
+    end
+    puts showRes
+  end
+
+  # 判断入参合理性，必须为[a,b]，a < b；a=b时，操作无实际意义
+  def check(range)
+    if range.length == 2 and range.first < range.last
+      return true
+    else
+      return nil
+    end
+  end
+end
+# 测试用例
 # Should display: [1, 5) 
 rl = RangeList.new
 rl.add([1, 5])
